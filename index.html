@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jadwal SPMB SMA/K Jawa Tengah 2025/2026</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .filter-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .filter-btn:hover {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .filter-btn.active {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .search-box {
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            min-width: 250px;
+        }
+
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .schedule-table th {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+        }
+
+        .schedule-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+            vertical-align: top;
+        }
+
+        .schedule-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .schedule-table tr:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .badge-online {
+            background-color: rgba(46, 204, 113, 0.2);
+            color: var(--success-color);
+        }
+
+        .badge-offline {
+            background-color: rgba(231, 76, 60, 0.2);
+            color: var(--accent-color);
+        }
+
+        .badge-warning {
+            background-color: rgba(243, 156, 18, 0.2);
+            color: var(--warning-color);
+        }
+
+        .mobile-schedule {
+            display: none;
+        }
+
+        .mobile-item {
+            background-color: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .mobile-item h3 {
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .mobile-date {
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .mobile-time {
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .mobile-location {
+            font-style: italic;
+            color: #7f8c8d;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        .highlight {
+            background-color: rgba(255, 255, 0, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .schedule-table {
+                display: none;
+            }
+
+            .mobile-schedule {
+                display: block;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .filter-container {
+                flex-direction: column;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+        }
+
+        /* Timeline styling */
+        .timeline-container {
+            display: none;
+            margin: 2rem 0;
+        }
+
+        .timeline-view-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .timeline-container {
+                display: block;
+            }
+
+            .timeline-view-btn {
+                display: inline-block;
+            }
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background-color: var(--secondary-color);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -2px;
+        }
+
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border: 4px solid var(--secondary-color);
+            border-radius: 50%;
+            top: 15px;
+            z-index: 1;
+        }
+
+        .left {
+            left: 0;
+        }
+
+        .right {
+            left: 50%;
+        }
+
+        .left::after {
+            right: -12px;
+        }
+
+        .right::after {
+            left: -12px;
+        }
+
+        .timeline-content {
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .timeline-date {
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+
+        @media screen and (max-width: 600px) {
+            .timeline::after {
+                left: 31px;
+            }
+
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+
+            .timeline-item::after {
+                left: 21px;
+            }
+
+            .left::after, .right::after {
+                left: 21px;
+            }
+
+            .right {
+                left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Jadwal SPMB SMA/K Jawa Tengah</h1>
+            <p class="subtitle">Tahun Ajaran 2025/2026</p>
+        </header>
+
+        <div class="filter-container">
+            <div class="filter-group">
+                <button class="filter-btn active" data-filter="all">Semua</button>
+                <button class="filter-btn" data-filter="online">Daring</button>
+                <button class="filter-btn" data-filter="offline">Luring</button>
+                <button class="filter-btn" data-filter="important">Penting</button>
+            </div>
+            <input type="text" class="search-box" placeholder="Cari kegiatan...">
+        </div>
+
+        <button class="timeline-view-btn">Tampilkan Timeline</button>
+
+        <table class="schedule-table">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Tanggal</th>
+                    <th>Waktu</th>
+                    <th>Kegiatan</th>
+                    <th>Lokasi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-category="important">
+                    <td>1</td>
+                    <td>17 April 2025</td>
+                    <td>-</td>
+                    <td>Penetapan Wilayah Penerimaan Murid Baru</td>
+                    <td>-</td>
+                </tr>
+                <tr data-category="important">
+                    <td>2</td>
+                    <td>15 Mei 2025</td>
+                    <td>-</td>
+                    <td>Pengumuman SPMB</td>
+                    <td>-</td>
+                </tr>
+                <tr data-category="online">
+                    <td>3</td>
+                    <td>26 Mei - 10 Juni 2025</td>
+                    <td>00.00 WIB (26 Mei) - 12.00 WIB (10 Juni)</td>
+                    <td>Pembuatan akun dan pengajuan berkas secara daring</td>
+                    <td><span class="badge badge-online">Daring</span></td>
+                </tr>
+                <tr data-category="offline important">
+                    <td>3</td>
+                    <td>27 Mei - 10 Juni 2025</td>
+                    <td>Senin-Kamis: 08.00-15.30 WIB (istirahat 12.00-13.00 WIB)<br>Jumat: 08.00-15.00 WIB (istirahat 11.30-13.00 WIB)</td>
+                    <td>Verifikasi berkas</td>
+                    <td>SMAN/SMKN di Jawa Tengah</td>
+                </tr>
+                <tr data-category="online">
+                    <td>4</td>
+                    <td>3 - 10 Juni 2025</td>
+                    <td>00.00-23.59 WIB (kecuali 10 Juni ditutup 22.00 WIB)</td>
+                    <td>Aktivasi Akun</td>
+                    <td><span class="badge badge-online">Daring</span></td>
+                </tr>
+                <tr data-category="online">
+                    <td>5</td>
+                    <td>11 Juni 2025</td>
+                    <td>-</td>
+                    <td>Sinkronisasi Data Calon Murid dalam Sistem Aplikasi</td>
+                    <td><span class="badge badge-online">Daring</span></td>
+                </tr>
+                <tr data-category="online important">
+                    <td>6</td>
+                    <td>12 - 17 Juni 2025</td>
+                    <td>12 Juni: 06.00 WIB - 17 Juni: 17.00 WIB</td>
+                    <td>Pendaftaran/Pemilihan Sekolah dan Perubahan Pilihan</td>
+                    <td><span class="badge badge-online">Daring</span></td>
+                </tr>
+                <tr data-category="important">
+                    <td>7</td>
+                    <td>18 - 19 Juni 2025</td>
+                    <td>-</td>
+                    <td>Evaluasi dan Masa Tenang</td>
+                    <td>-</td>
+                </tr>
+                <tr data-category="online important">
+                    <td>8</td>
+                    <td>20 Juni 2025</td>
+                    <td>Maksimal pukul 23.59 WIB</td>
+                    <td>Pengumuman Hasil Seleksi</td>
+                    <td><span class="badge badge-online">Daring</span></td>
+                </tr>
+                <tr data-category="offline important">
+                    <td>9</td>
+                    <td>23 - 26 Juni 2025</td>
+                    <td>Sampai pukul 15.30 WIB</td>
+                    <td>Daftar Ulang</td>
+                    <td>Sekolah tujuan masing-masing</td>
+                </tr>
+                <tr data-category="online">
+                    <td>10</td>
+                    <td>27 Juni 2025</td>
+                    <td>Maksimal pukul 23.59 WIB</td>
+                    <td>Pengumuman Daftar Peserta Cadangan</td>
+                    <td><span class="badge badge-online">Daring</span></td>
+                </tr>
+                <tr data-category="offline">
+                    <td>11</td>
+                    <td>2 - 3 Juli 2025</td>
+                    <td>Sampai pukul 15.30 WIB</td>
+                    <td>Daftar Ulang bagi CMB Cadangan (jika ada kuota tersisa)</td>
+                    <td>Sekolah tujuan masing-masing</td>
+                </tr>
+                <tr data-category="important">
+                    <td>12</td>
+                    <td>14 Juli 2025</td>
+                    <td>-</td>
+                    <td>Awal Tahun Ajaran Baru 2025/2026</td>
+                    <td>Sekolah masing-masing</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="mobile-schedule">
+            <div class="mobile-item" data-category="important">
+                <h3>Penetapan Wilayah Penerimaan Murid Baru</h3>
+                <div class="mobile-date">17 April 2025</div>
+                <div class="mobile-time">-</div>
+                <div class="mobile-location">-</div>
+            </div>
+            <div class="mobile-item" data-category="important">
+                <h3>Pengumuman SPMB</h3>
+                <div class="mobile-date">15 Mei 2025</div>
+                <div class="mobile-time">-</div>
+                <div class="mobile-location">-</div>
+            </div>
+            <div class="mobile-item" data-category="online">
+                <h3>Pembuatan akun dan pengajuan berkas secara daring</h3>
+                <div class="mobile-date">26 Mei - 10 Juni 2025</div>
+                <div class="mobile-time">00.00 WIB (26 Mei) - 12.00 WIB (10 Juni)</div>
+                <div class="mobile-location"><span class="badge badge-online">Daring</span></div>
+            </div>
+            <div class="mobile-item" data-category="offline important">
+                <h3>Verifikasi berkas</h3>
+                <div class="mobile-date">27 Mei - 10 Juni 2025</div>
+                <div class="mobile-time">Senin-Kamis: 08.00-15.30 WIB (istirahat 12.00-13.00 WIB)<br>Jumat: 08.00-15.00 WIB (istirahat 11.30-13.00 WIB)</div>
+                <div class="mobile-location">SMAN/SMKN di Jawa Tengah</div>
+            </div>
+            <div class="mobile-item" data-category="online">
+                <h3>Aktivasi Akun</h3>
+                <div class="mobile-date">3 - 10 Juni 2025</div>
+                <div class="mobile-time">00.00-23.59 WIB (kecuali 10 Juni ditutup 22.00 WIB)</div>
+                <div class="mobile-location"><span class="badge badge-online">Daring</span></div>
+            </div>
+            <div class="mobile-item" data-category="online">
+                <h3>Sinkronisasi Data Calon Murid dalam Sistem Aplikasi</h3>
+                <div class="mobile-date">11 Juni 2025</div>
+                <div class="mobile-time">-</div>
+                <div class="mobile-location"><span class="badge badge-online">Daring</span></div>
+            </div>
+            <div class="mobile-item" data-category="online important">
+                <h3>Pendaftaran/Pemilihan Sekolah dan Perubahan Pilihan</h3>
+                <div class="mobile-date">12 - 17 Juni 2025</div>
+                <div class="mobile-time">12 Juni: 06.00 WIB - 17 Juni: 17.00 WIB</div>
+                <div class="mobile-location"><span class="badge badge-online">Daring</span></div>
+            </div>
+            <div class="mobile-item" data-category="important">
+                <h3>Evaluasi dan Masa Tenang</h3>
+                <div class="mobile-date">18 - 19 Juni 2025</div>
+                <div class="mobile-time">-</div>
+                <div class="mobile-location">-</div>
+            </div>
+            <div class="mobile-item" data-category="online important">
+                <h3>Pengumuman Hasil Seleksi</h3>
+                <div class="mobile-date">20 Juni 2025</div>
+                <div class="mobile-time">Maksimal pukul 23.59 WIB</div>
+                <div class="mobile-location"><span class="badge badge-online">Daring</span></div>
+            </div>
+            <div class="mobile-item" data-category="offline important">
+                <h3>Daftar Ulang</h3>
+                <div class="mobile-date">23 - 26 Juni 2025</div>
+                <div class="mobile-time">Sampai pukul 15.30 WIB</div>
+                <div class="mobile-location">Sekolah tujuan masing-masing</div>
+            </div>
+            <div class="mobile-item" data-category="online">
+                <h3>Pengumuman Daftar Peserta Cadangan</h3>
+                <div class="mobile-date">27 Juni 2025</div>
+                <div class="mobile-time">Maksimal pukul 23.59 WIB</div>
+                <div class="mobile-location"><span class="badge badge-online">Daring</span></div>
+            </div>
+            <div class="mobile-item" data-category="offline">
+                <h3>Daftar Ulang bagi CMB Cadangan (jika ada kuota tersisa)</h3>
+                <div class="mobile-date">2 - 3 Juli 2025</div>
+                <div class="mobile-time">Sampai pukul 15.30 WIB</div>
+                <div class="mobile-location">Sekolah tujuan masing-masing</div>
+            </div>
+            <div class="mobile-item" data-category="important">
+                <h3>Awal Tahun Ajaran Baru 2025/2026</h3>
+                <div class="mobile-date">14 Juli 2025</div>
+                <div class="mobile-time">-</div>
+                <div class="mobile-location">Sekolah masing-masing</div>
+            </div>
+        </div>
+
+        <div class="timeline-container">
+            <div class="timeline">
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <div class="timeline-date">17 April 2025</div>
+                        <h3>Penetapan Wilayah Penerimaan Murid Baru</h3>
+                    </div>
+                </div>
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <div class="timeline-date">15 Mei 2025</div>
+                        <h3>Pengumuman SPMB</h3>
+                    </div>
+                </div>
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <div class="timeline-date">26 Mei - 10 Juni 2025</div>
+                        <h3>Pembuatan akun dan pengajuan berkas</h3>
+                        <p>Daring</p>
+                    </div>
+                </div>
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <div class="timeline-date">27 Mei - 10 Juni 2025</div>
+                        <h3>Verifikasi berkas</h3>
+                        <p>SMAN/SMKN di Jawa Tengah</p>
+                    </div>
+                </div>
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <div class="timeline-date">3 - 10 Juni 2025</div>
+                        <h3>Aktivasi Akun</h3>
+                        <p>Daring</p>
+                    </div>
+                </div>
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <div class="timeline-date">12 - 17 Juni 2025</div>
+                        <h3>Pendaftaran/Pemilihan Sekolah</h3>
+                        <p>Daring</p>
+                    </div>
+                </div>
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <div class="timeline-date">20 Juni 2025</div>
+                        <h3>Pengumuman Hasil Seleksi</h3>
+                        <p>Daring</p>
+                    </div>
+                </div>
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <div class="timeline-date">23 - 26 Juni 2025</div>
+                        <h3>Daftar Ulang</h3>
+                        <p>Sekolah tujuan</p>
+                    </div>
+                </div>
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <div class="timeline-date">14 Juli 2025</div>
+                        <h3>Awal Tahun Ajaran Baru</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>© 2025 Dinas Pendidikan Provinsi Jawa Tengah</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Filter functionality
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const searchBox = document.querySelector('.search-box');
+            const scheduleItems = document.querySelectorAll('.schedule-table tbody tr, .mobile-item');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    const filterValue = this.getAttribute('data-filter');
+                    filterSchedule(filterValue);
+                });
+            });
+            
+            searchBox.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                filterSchedule(document.querySelector('.filter-btn.active').getAttribute('data-filter'), searchTerm);
+            });
+            
+            function filterSchedule(filterValue, searchTerm = '') {
+                scheduleItems.forEach(item => {
+                    const categories = item.getAttribute('data-category').split(' ');
+                    const textContent = item.textContent.toLowerCase();
+                    
+                    const matchesFilter = filterValue === 'all' || categories.includes(filterValue);
+                    const matchesSearch = searchTerm === '' || textContent.includes(searchTerm);
+                    
+                    if (matchesFilter && matchesSearch) {
+                        item.style.display = '';
+                        
+                        // Highlight search term
+                        if (searchTerm !== '') {
+                            const regex = new RegExp(searchTerm, 'gi');
+                            const highlightedText = item.innerHTML.replace(regex, match => 
+                                `<span class="highlight">${match}</span>`);
+                            item.innerHTML = highlightedText;
+                        }
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            }
+            
+            // Timeline view toggle
+            const timelineBtn = document.querySelector('.timeline-view-btn');
+            const timelineContainer = document.querySelector('.timeline-container');
+            
+            timelineBtn.addEventListener('click', function() {
+                if (timelineContainer.style.display === 'none' || !timelineContainer.style.display) {
+                    timelineContainer.style.display = 'block';
+                    this.textContent = 'Sembunyikan Timeline';
+                } else {
+                    timelineContainer.style.display = 'none';
+                    this.textContent = 'Tampilkan Timeline';
+                }
+            });
+            
+            // Mobile view - highlight important dates
+            const importantItems = document.querySelectorAll('[data-category*="important"]');
+            importantItems.forEach(item => {
+                if (item.classList.contains('mobile-item')) {
+                    item.style.borderLeft = '4px solid #e74c3c';
+                }
+            });
+            
+            // Initialize with all items shown
+            filterSchedule('all');
+        });
+    </script>
+</body>
+</html>
